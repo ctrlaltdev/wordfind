@@ -28,14 +28,13 @@
   */
   var WordFind = function () {
 
-    // Letters used to fill blank spots in the puzzle
-
+  // Letters used to fill blank spots in the puzzle
 	var language = 'english';				// Default to English
 	var letters = 'abcdefghijklmnoprstuvwy';		// Default to Latin Alphabet
 	    
 	function setLanguage() {
-		if($('#language-name') && $('#language-name').attr('id')) {
-			language = $('#language-name').val();
+		if(document.getElementById('language-name') && document.getElementById('language-name').id) {
+			language = document.getElementById('language-name').value;
 			switch(language) {
 				case 'english':
 			    		letters = 'abcdefghijklmnoprstuvwy';
@@ -103,8 +102,7 @@
     */
 
     // The list of all the possible orientations
-    var allOrientations = ['horizontal','horizontalBack','vertical','verticalUp',
-                           'diagonal','diagonalUp','diagonalBack','diagonalUpBack'];
+    var allOrientations = ['horizontal','horizontalBack','vertical','verticalUp','diagonal','diagonalUp','diagonalBack','diagonalUpBack'];
 
     // The definition of the orientation, calculates the next square given a
     // starting square (x,y) and distance (i) from that square.
@@ -438,7 +436,7 @@
                 lettersToAdd = options.fillBlanks.toLowerCase().split('');
                 extraLetterGenerator = () => lettersToAdd.pop() || (fillingBlanksCount++ && '');
             } else {
-                extraLetterGenerator = () => LETTERS[Math.floor(Math.random() * LETTERS.length)];
+                extraLetterGenerator = () => letters[Math.floor(Math.random() * letters.length)];
             }
             var extraLettersCount = this.fillBlanks({puzzle, extraLetterGenerator: extraLetterGenerator});
             if (lettersToAdd && lettersToAdd.length) {

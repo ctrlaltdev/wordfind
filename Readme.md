@@ -1,12 +1,12 @@
 _Wordfind_ is a simple `javascript` library for generating (hopefully fun) word find (also known as word search) puzzles. Just give it a set of words and a few milliseconds later it will spit out a puzzle containing those words.
 
-The core `wordfind.js` library contains no dependencies and will work both in the browser and in node.js. The repository also includes a fully functional word find game (aptly called `wordfindgame.js`) as an example. The game has a dependency on `jQuery`.
+The core `wordfind.js` library contains no dependencies and will work both in the browser and in node.js. The repository also includes a fully functional word find game (aptly called `wordfindgame.js`) as an example.
 
-This is a fork of https://github.com/bunkat/wordfind allowing to specify the filling letters you want.
+This is a fork of https://github.com/bunkat/wordfind.
 
 ## Basic Browser Example
     
-    <script type="text/javascript" src="../src/wordfind.js"></script> 
+    <script src="src/wordfind.js"></script> 
     <script>
     
       var words = ['cows', 'tracks', 'arrived', 'located', 'sir', 'seat',
@@ -27,9 +27,8 @@ This is a fork of https://github.com/bunkat/wordfind allowing to specify the fil
     <div id='puzzle'></div>
     <div id='words'></div>
  
-    <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
-    <script type="text/javascript" src="../src/wordfind.js"></script> 
-    <script type="text/javascript" src="scripts/wordfindgame.js"></script> 
+    <script src="src/wordfind.js"></script> 
+    <script src="src/wordfindgame.js"></script> 
     <script>
     
       var words = ['cows', 'tracks', 'arrived', 'located', 'sir', 'seat',

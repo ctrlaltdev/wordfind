@@ -6,45 +6,54 @@
 *     http://github.com/bunkat/wordfind
 */
 
-(function (document, $, wordfind) {
+(function (document, wordfind) {
   'use strict';
 
   /**
   * An example game using the puzzles created from wordfind.js. Click and drag
   * to highlight words.
   *
-  * WordFindGame requires wordfind.js and jQuery.
+  * WordFindGame requires wordfind.js.
   */
 
     /**
     * Draws the puzzle by inserting rows of buttons into el.
     *
-    * @param {String} el: The jQuery element to write the puzzle to
+    * @param {String} el: The element to write the puzzle to
     * @param {[[String]]} puzzle: The puzzle to draw
     */
     var drawPuzzle = function (el, puzzle) {
-      var output = '';
+      while (document.querySelector(el).firstChild) {
+        document.querySelector(el).removeChild(document.querySelector(el).firstChild);
+      }
       // for each row in the puzzle
       for (var i = 0, height = puzzle.length; i < height; i++) {
         // append a div to represent a row in the puzzle
+        let div = document.createElement('div');
         var row = puzzle[i];
-        output += '<div>';
         // for each element in that row
         for (var j = 0, width = row.length; j < width; j++) {
             // append our button with the appropriate class
-            output += '<button class="puzzleSquare" x="' + j + '" y="' + i + '">';
-            output += row[j] || '&nbsp;';
-            output += '</button>';
+            let btn = document.createElement('button');
+            btn.classList.add('puzzleSquare');
+            btn.setAttribute('x', j);
+            btn.setAttribute('y', i);
+            let btnTxt = document.createTextNode(row[j] || '&nbsp;');
+            btn.appendChild(btnTxt);
+            div.appendChild(btn);
         }
         // close our div that represents a row
-        output += '</div>';
+        document.querySelector(el).appendChild(div);
       }
-
-      $(el).html(output);
     };
 
     var getWords = function () {
-      return $('input.word').toArray().map(wordEl => wordEl.value.toLowerCase()).filter(word => word);
+      let words = document.querySelectorAll('input.word');
+      let wordlist = [];
+      [].forEach.call(words, (wordEl) => {
+        wordlist.push(wordEl.value.toLowerCase());
+      });
+      return wordlist;
     };
 
     /**
@@ -103,10 +112,10 @@
     *
     */
     var startTurn = function () {
-      $(this).addClass('selected');
+      this.classList.add('selected');
       startSquare = this;
       selectedSquares.push(this);
-      curWord = $(this).text();
+      curWord = this.innerText;
     };
     
     var touchMove = function(e) {
@@ -149,7 +158,7 @@
       }
 
       while (backTo < selectedSquares.length) {
-        $(selectedSquares[selectedSquares.length-1]).removeClass('selected');
+        document.querySelector(selectedSquares[selectedSquares.length-1]).classList.remove('selected');
         selectedSquares.splice(backTo,1);
         curWord = curWord.substr(0, curWord.length-1);
       }
@@ -158,17 +167,17 @@
       // see if this is just a new orientation from the first square
       // this is needed to make selecting diagonal words easier
       var newOrientation = calcOrientation(
-          $(startSquare).attr('x')-0,
-          $(startSquare).attr('y')-0,
-          $(target).attr('x')-0,
-          $(target).attr('y')-0
-          );
+        document.querySelector(startSquare).getAttribute('x') - 0,
+        document.querySelector(startSquare).getAttribute('y') - 0,
+        document.querySelector(target).getAttribute('x') - 0,
+        document.querySelector(target).getAttribute('y') - 0
+        );
 
       if (newOrientation) {
         selectedSquares = [startSquare];
-        curWord = $(startSquare).text();
+        curWord = document.querySelector(startSquare).innerText;
         if (lastSquare !== startSquare) {
-          $(lastSquare).removeClass('selected');
+          document.querySelector(lastSquare).classList.remove('selected');
           lastSquare = startSquare;
         }
         curOrientation = newOrientation;
@@ -176,11 +185,11 @@
 
       // see if the move is along the same orientation as the last move
       var orientation = calcOrientation(
-          $(lastSquare).attr('x')-0,
-          $(lastSquare).attr('y')-0,
-          $(target).attr('x')-0,
-          $(target).attr('y')-0
-          );
+        document.querySelector(lastSquare).getAttribute('x') - 0,
+        document.querySelector(lastSquare).getAttribute('y') - 0,
+        document.querySelector(target).getAttribute('x') - 0,
+        document.querySelector(target).getAttribute('y') - 0
+        );
 
       // if the new square isn't along a valid orientation, just ignore it.
       // this makes selecting diagonal words less frustrating
@@ -199,16 +208,16 @@
     /**
     * Updates the game state when the previous selection was valid.
     *
-    * @param {el} square: The jQuery element that was played
+    * @param {el} square: The element that was played
     */
     var playTurn = function (square) {
 
       // make sure we are still forming a valid word
       for (var i = 0, len = wordList.length; i < len; i++) {
-        if (wordList[i].indexOf(curWord + $(square).text()) === 0) {
-          $(square).addClass('selected');
+        if (wordList[i].indexOf(curWord + document.querySelector(square).innerText) === 0) {
+          document.querySelector(square).classList.add('selected');
           selectedSquares.push(square);
-          curWord += $(square).text();
+          curWord += document.querySelector(square).innertext;
           break;
         }
       }
@@ -225,18 +234,27 @@
       for (var i = 0, len = wordList.length; i < len; i++) {
         
         if (wordList[i] === curWord) {
-          $('.selected').addClass('found');
+          let selected = document.querySelectorAll('.selected');
+          [].forEach.call(select, (item) => {
+            item.classList.add('found');
+          });
           wordList.splice(i,1);
-          $('input.word[value="' + curWord + '"]').addClass('wordFound');
+          document.querySelector('input.word[value="' + curWord + '"]').classList.add('wordFound');
         }
 
         if (wordList.length === 0) {
-          $('.puzzleSquare').addClass('complete');
+          let completed = document.querySelectorAll('.puzzleSquare');
+          [].forEach.call(completed, (item) => {
+            item.classList.add('complete');
+          });
         }
       }
 
       // reset the turn
-      $('.selected').removeClass('selected');
+      let selected = document.querySelectorAll('.selected');
+      [].forEach.call(selected, (item) => {
+        item.classList.remove('selected');
+      });
       startSquare = null;
       selectedSquares = [];
       curWord = '';
@@ -244,7 +262,10 @@
     };
 
     /* Constructor START */
-    $('input.word').removeClass('wordFound');
+    let founds = document.querySelectorAll('input.word');
+      [].forEach.call(founds, (item) => {
+        item.classList.remove('wordFound');
+      });
 
     // Class properties, game initial config:
     wordList = getWords().sort();
@@ -256,16 +277,22 @@
     // attach events to the buttons
     // optimistically add events for windows 8 touch
     if (window.navigator.msPointerEnabled) {
-      $('.puzzleSquare').on('MSPointerDown', startTurn);
-      $('.puzzleSquare').on('MSPointerOver', select);
-      $('.puzzleSquare').on('MSPointerUp', endTurn);
+      let puzzleSquare = document.querySelectorAll('.puzzleSquare');
+      [].forEach.call(puzzleSquare, (item) => {
+        item.addEventListener('MSPointerDown', startTurn);
+        item.addEventListener('MSPointerOver', select);
+        item.addEventListener('MSPointerUp', endTurn);
+      });
     } else {
-      $('.puzzleSquare').mousedown(startTurn);
-      $('.puzzleSquare').mouseenter(mouseMove);
-      $('.puzzleSquare').mouseup(endTurn);
-      $('.puzzleSquare').on("touchstart", startTurn);
-      $('.puzzleSquare').on("touchmove", touchMove);
-      $('.puzzleSquare').on("touchend", endTurn);
+      let puzzleSquare = document.querySelectorAll('.puzzleSquare');
+      [].forEach.call(puzzleSquare, (item) => {
+        item.addEventListener('mousedown', startTurn);
+        item.addEventListener('mouseenter', mouseMove);
+        item.addEventListener('mouseup', endTurn);
+        item.addEventListener('touchstart', startTurn);
+        item.addEventListener('touchmove', touchMove);
+        item.addEventListener('touchend', endTurn);
+      });
     }
 
     /**
@@ -283,27 +310,32 @@
             y = solution[i].y,
             next = wordfind.orientations[orientation];
 
-        var wordEl = $('input.word[value="' + word + '"]');
-        if (!wordEl.hasClass('wordFound')) {
+        var wordEl = document.querySelector('input.word[value="' + word + '"]');
+        if (!wordEl.classList.contains('wordFound')) {
           for (var j = 0, size = word.length; j < size; j++) {
             var nextPos = next(x, y, j);
-            $('[x="' + nextPos.x + '"][y="' + nextPos.y + '"]').addClass('solved');
+            document.querySelector('[x="' + nextPos.x + '"][y="' + nextPos.y + '"]').classList.add('solved');
           }
 
-          wordEl.addClass('wordFound');
+          wordEl.classList.add('wordFound');
         }
       }
     };
   };
 
   WordFindGame.emptySquaresCount = function () {
-    var allSquares = $('.puzzleSquare').toArray();
+    var allSquares = [].slice.call(document.querySelectorAll('.puzzleSquare'));
     return allSquares.length - allSquares.filter(b => b.textContent.trim()).length;
   };
 
   // Static method
   WordFindGame.insertWordBefore = function (el, word) {
-    $('<li><input class="word" value="' + (word || '') + '"></li>').insertBefore(el);
+    let li = document.createElement('li');
+    let input = document.createElement('input');
+    input.classList.add('word');
+    input.setAttribute('value', (word || ''));
+    li.appendChild(input);
+    el.parentNode.insertBefore(li, el);
   };
 
 
@@ -312,4 +344,4 @@
   */
   window.WordFindGame = WordFindGame;
 
-}(document, jQuery, wordfind));
+}(document, wordfind));
