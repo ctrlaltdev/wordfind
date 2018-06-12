@@ -1,16 +1,18 @@
 {
   "name": "wordfind",
   "version": "1.0.0",
-  "description": "Generate Word Find (also known as Word Search) puzzles.",
+  "description": "Generate Word Puzzle (also known as Word Search or Word Find).",
   "main": "src/wordfind.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ctrlaltdev/wordfind.git"
   },
   "keywords": [
-    "wordfind",
-    "wordsearch",
-    "puzzle"
+    "word",
+    "word",
+    "puzzle",
+    "search",
+    "find"
   ],
   "authors": ["Bunkat", "Aarti <aartiwithcode@gmail.com>", "HoldOffHunger <holdoffhunger@gmail.com>", "BurakErbora", "Lucas Cimon <lucas.cimon@gmail.com>", "Yorick <yorick@ctrlaltdev.xyz>"],
   "bugs": {
