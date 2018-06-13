@@ -1,11 +1,11 @@
 /**
  *Create a words puzzle game
- * @class wordFind
+ * @class wordPuzzle
  */
-class wordFind {
+class wordPuzzle {
 
   /**
-   *Creates an instance of wordFind.
+   *Creates an instance of wordPuzzle.
    * @param {!Array.<string>} words list of words to include in the puzzle
    * @param {!HTMLElement} domElem HTML DOM Element that will contain the game
    * @param {!Object} [opts={}] game options
@@ -19,7 +19,7 @@ class wordFind {
    * @param {!number} [opts.maxGridGrowth=10] number of puzzle grid increases, default: 10
    * @param {!boolean} [opts.preferOverlap=true] maximize word overlap or not, default: true
    * @param {!boolean} [opts.debug=false] wether or not to print the puzzle to the console, default: false
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   constructor(words, domElem, opts = {}) {
 
@@ -80,7 +80,7 @@ class wordFind {
    * @param {!number} i
    * @returns {{x: !number, y: !number}} an object {x, y} representing the coordinates of the next square
    * @private
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   compOrientations(orientation, x, y, i) {
     switch(orientation) {
@@ -121,7 +121,7 @@ class wordFind {
    * @param {!number} l length of the word
    * @returns {boolean} true if the word will fit starting at the square provided using the specified orientation
    * @private
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   checkOrientations(orientation, x, y, h, w, l) {
     switch(orientation) {
@@ -159,7 +159,7 @@ class wordFind {
    * @param {!number} l length of the word
    * @returns {{x: number, y: number}} an object {x, y} representing the coordinates of the next square
    * @private
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   skipOrientations(orientation, x, y, l) {
     switch(orientation) {
@@ -197,7 +197,7 @@ class wordFind {
    * @param {number} opts.width Width of the puzzle
    * @returns {Array.<Array>} Returns either a valid puzzle with all of the words or null if a valid
    * @private
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   fillPuzzle(wordsList, opts) {
     let i, j, len
@@ -228,7 +228,7 @@ class wordFind {
    * @param {Object} opts controls whether or not word overlap should be maximized
    * @param {string} word word to fit into the puzzle
    * @returns {boolean} true if the word was successfully placed, false otherwise
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   placeWordInPuzzle(puzzle, opts, word) {
     // find all of the best locations where this word would fit
@@ -252,7 +252,7 @@ class wordFind {
    * @param {string} word word to fit into the puzzle
    * @returns {Array.<{locations: Array.<{x: number, y: number}>, orientation: string, overlap: number}>} list of location objects which contain an x, y coordinate indicating the start of the word, the orientation of the word, and the number of letters that overlapped with existing letter
    * @private
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   findBestLocations(puzzle, options, word) {
     let locations = [],
@@ -314,7 +314,7 @@ class wordFind {
   * @param {string} orientation orientation to use when computing the next square
   * @returns {number} number of letters overlapped with existing words if the word fits in the specified position, -1 if the word does not fit
    * @private
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   calcOverlap(word, puzzle, x, y, orientation) {
     let overlap = 0
@@ -345,7 +345,7 @@ class wordFind {
    * @param {number} overlap required level of overlap
    * @returns {Array.<Object>} pruned set of locations
    * @private
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   pruneLocations(locations, overlap) {
     var pruned = []
@@ -365,7 +365,7 @@ class wordFind {
    * @param {number} y
    * @param {string} orientation orientation to use when computing the next squares
    * @private
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   placeWord(puzzle, word, x, y, orientation) {
     for (let i = 0, len = word.length; i < len; i++) {
@@ -379,7 +379,7 @@ class wordFind {
    * @param {!string} [lang=this.opts.lang] ISO 639-1 language code
    * @returns {!string} a string including every character in the set
    * @private
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   setLetters(lang = this.opts.lang) {
     switch(lang) {
@@ -451,7 +451,7 @@ class wordFind {
    * @param {Array.<string>} [wordList=this.wordList]
    * @param {Object} [options=this.opts]
    * @returns {Array.<Array>}
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   newPuzzle(wordList = this.wordList, options = this.opts) {
     // add the words to the puzzle
@@ -520,7 +520,7 @@ class wordFind {
    * @param {Array.<string>} words
    * @returns {Array.<{x: number, y: number, orientation: string, word: string, overlap: number}>}
    * @public
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   solve(puzzle, words) {
     var options = {
@@ -551,7 +551,7 @@ class wordFind {
    *Outputs a puzzle to the console, useful for debugging
    * @param {Array.<Array>} puzzle current state of the puzzle
    * @returns {string} formatted string representing the puzzle
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   print(puzzle) {
     let puzzleString = ''
@@ -571,7 +571,7 @@ class wordFind {
    *Draws the puzzle by inserting rows of buttons into the DOM Element
    * @param {HTMLElement} [domElem=this.domElem]
    * @param {Array.<Array>} [puzzle=this.finalPuzzle]
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   drawPuzzle(domElem = this.domElem, puzzle = this.finalPuzzle) {
     while (domElem.firstChild) {
@@ -606,7 +606,7 @@ class wordFind {
    * @param {number} y2 y coordinate of the second point
    * @returns {string} matching orientation
    * @private
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   calcOrientation(x1, y1, x2, y2) {
     for (let i = 0 ; i < this.orientations.length ; i++) {
@@ -702,7 +702,7 @@ class wordFind {
   /**
    *Set the event handlers that will trigger the recognition of the words
    * @param {HTMLElement} [domElem=this.domElem]
-   * @memberof wordFind
+   * @memberof wordPuzzle
    */
   setEventHandlers(domElem = this.domElem) {
     if (window.navigator.msPointerEnabled) {
@@ -726,4 +726,4 @@ class wordFind {
   }
 }
 
-export default wordFind
+export default wordPuzzle
