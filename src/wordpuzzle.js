@@ -21,7 +21,7 @@ class wordPuzzle {
    * @param {!boolean} [opts.debug=false] wether or not to print the puzzle to the console, default: false
    * @memberof wordPuzzle
    */
-  constructor(words, domElem, opts = {}) {
+  constructor(words, domElem, wordListElem,opts = {}) {
 
     if (!words.length) {
       throw new Error('No words provided')
@@ -37,6 +37,7 @@ class wordPuzzle {
      * @param {Array.<string>} wordList copy and sort the words by length, inserting words into the puzzle from longest to shortest works out the best
      */
     this.wordList = words.slice(0).sort()
+    this.wordListElem = wordListElem
 
     // initialize the options
     let maxWordLength = this.wordList[0].length
@@ -596,6 +597,29 @@ class wordPuzzle {
       // close our div that represents a row
       domElem.appendChild(div);
     }
+    this.listWords(this.opts.lang)
+  }
+
+  /**
+   *Print the words to find in a list
+   * @param {string} [lang='EN']
+   * @param {*} [wordListElem=this.wordListElem]
+   * @memberof wordPuzzle
+   */
+  listWords(lang = 'EN', wordListElem = this.wordListElem) {
+    while (wordListElem.firstChild) {
+      wordListElem.removeChild(wordListElem.firstChild);
+    }
+
+    let wordList = this.wordList.sort(new Intl.Collator(lang).compare)
+
+    wordList.map((word) => {
+      let li = document.createElement('li')
+      li.setAttribute('data-word', word)
+      let liTxt = document.createTextNode(word)
+      li.appendChild(liTxt)
+      wordListElem.appendChild(li)
+    })
   }
 
   /**
@@ -674,6 +698,7 @@ class wordPuzzle {
         [].forEach.call(selected, (item) => {
           item.classList.add('found')
         })
+        this.wordListElem.querySelector('li[data-word="'+this.curWord.toLowerCase()+'"]').classList.add('wordFound')
         this.wordList.splice(i, 1)
       }
 
