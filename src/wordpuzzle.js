@@ -658,8 +658,9 @@ class wordPuzzle {
   }
 
   touchMove(e) {
-    let xPos = e.touches[0].pageX
-    let yPos = e.touches[0].pageY
+    let touch = e.touches[0] || e.changedTouches[0]
+    let xPos = touch.clientX
+    let yPos = touch.clientY
     let elem = document.elementFromPoint(xPos, yPos)
     this.selectSquare(elem)
   }
