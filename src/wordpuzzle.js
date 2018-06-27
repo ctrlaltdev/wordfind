@@ -658,6 +658,8 @@ class wordPuzzle {
   }
 
   touchMove(e) {
+    e.preventDefault()
+    e.stopPropagation()
     let touch = e.touches[0] || e.changedTouches[0]
     let xPos = touch.clientX
     let yPos = touch.clientY
