@@ -633,15 +633,14 @@ class wordPuzzle {
    * @memberof wordPuzzle
    */
   calcOrientation(x1, y1, x2, y2) {
-    for (let i = 0 ; i < this.orientations.length ; i++) {
-      let nextPos = this.compOrientations(this.orientations[i], x1, y1, 1)
-
-      if (nextPos.x === x2 && nextPos.y === y2) {
-        return this.orientations[i]
+    let orientations = this.orientations
+    for (let i = 0 ; i < orientations.length ; i++) {
+      let nextPos = this.compOrientations(orientations[i], parseInt(x1), parseInt(y1), 1)
+      if (nextPos.x == x2 && nextPos.y == y2) {
+        return orientations[i]
       }
-
-      return null
     }
+    return 'Thou Shall Not Have An Orientation'
   }
 
   startTurn(e) {
@@ -676,7 +675,8 @@ class wordPuzzle {
         elem.getAttribute('x'),
         elem.getAttribute('y'),
       )
-      if (this.curOrientation == '' || this.curOrientation == orientation) {
+      if (this.curOrientation === null || this.curOrientation === orientation) {
+        this.curOrientation = orientation
         this.playTurn(elem)
       } else {
         this.endTurn()
