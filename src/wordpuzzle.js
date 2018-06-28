@@ -657,18 +657,18 @@ class wordPuzzle {
   }
 
   touchMove(e) {
-    e.preventDefault()
-    e.stopPropagation()
     let touch = e.touches[0] || e.changedTouches[0]
     let xPos = touch.clientX
     let yPos = touch.clientY
     let elem = document.elementFromPoint(xPos, yPos)
     this.selectSquare(elem)
+    e.preventDefault()
+    e.stopPropagation()
   }
 
   selectSquare(elem) {
     let lastSquare = this.selectedSquares[this.selectedSquares.length - 1]
-    if (this.startSquare && elem !== this.startSquare) {
+    if (this.startSquare && elem !== this.startSquare && elem !== lastSquare) {
       let orientation = this.calcOrientation(
         lastSquare.getAttribute('x'),
         lastSquare.getAttribute('y'),
